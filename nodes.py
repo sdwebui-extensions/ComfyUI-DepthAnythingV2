@@ -70,12 +70,15 @@ fp16 reduces quality by a LOT, not recommended.
             model_path = os.path.join(download_path, model)
 
             if not os.path.exists(model_path):
-                print(f"Downloading model to: {model_path}")
-                from huggingface_hub import snapshot_download
-                snapshot_download(repo_id="Kijai/DepthAnythingV2-safetensors", 
-                                  allow_patterns=[f"*{model}*"],
-                                  local_dir=download_path, 
-                                  local_dir_use_symlinks=False)
+                if os.path.exists(folder_paths.cache_dir):
+                    model_path = os.path.join(folder_paths.cache_dir, "depthanything", model)
+                else:
+                    print(f"Downloading model to: {model_path}")
+                    from huggingface_hub import snapshot_download
+                    snapshot_download(repo_id="Kijai/DepthAnythingV2-safetensors", 
+                                    allow_patterns=[f"*{model}*"],
+                                    local_dir=download_path, 
+                                    local_dir_use_symlinks=False)
 
             print(f"Loading model from: {model_path}")
 
